@@ -1,26 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  state = {
+    advice: "",
+  };
+  componentDidMount() {
+    this.handleFetch();
+  }
+  handleFetch = () => {
+    fetch("https://api.adviceslip.com/advice")
+      .then((response) => response.json())
+      .then((response) => {
+        const { advice } = response.slip;
+
+        this.setState({ advice: advice });
+      });
+  };
+  render() {
+    return (
+      <div className="App">
+        <div className="card">
+          <h1 className="advice">{this.state.advice}</h1>
+          <button className="button" onClick={this.handleFetch}>
+            <span>random advice!!</span>
+          </button>
+        </div>
+      </div>
+    );
+  }
 }
 
 export default App;
